@@ -1,0 +1,15 @@
+name: "FileFieldCompare"
+description: "Compare the fields in two files"
+inputs:
+  file:
+    description: "The file whose fields should be compared to a reference"
+    required: true
+  reference-file:
+    description: "The reference file against which to perform the comparison"
+    required: true
+runs:
+  using: "docker"
+  image: "Dockerfile"
+  args:
+    - ${{ inputs.file }}
+    - ${{ inputs.reference }}
