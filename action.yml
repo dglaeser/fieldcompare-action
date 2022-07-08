@@ -1,12 +1,12 @@
-name: "FileFieldCompare"
+name: "FieldCompare"
 description: "Compare the fields in two files"
 inputs:
   file:
-    description: "The file whose fields should be compared to a reference"
-    required: true
+    description: "The file whose fields should be compared to a reference. Can be a local file or a URL."
+    required: True
   reference-file:
-    description: "The reference file against which to perform the comparison"
-    required: true
+    description: "The reference file against which to perform the comparison. Can be a local file or a URL."
+    required: True
 runs:
   using: "docker"
   image: "Dockerfile"
