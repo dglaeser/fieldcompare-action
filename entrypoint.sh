@@ -22,6 +22,7 @@ function url_file_name() {
 
 FILE=$1
 REFERENCE=$2
+TOLERANCE_OPTS=$3
 
 FILENAME=$FILE
 if is_url $FILE; then
@@ -37,4 +38,5 @@ if is_url $REFERENCE; then
     wget $REFERENCE -O $REFERENCE_FILE_NAME
 fi
 
-fieldcompare file $FILENAME --reference $REFERENCE_FILE_NAME
+fieldcompare file $FILENAME --reference $REFERENCE_FILE_NAME \
+             $TOLERANCE_OPTS
