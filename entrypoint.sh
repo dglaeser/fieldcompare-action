@@ -1,42 +1,42 @@
 #!/bin/bash -l
 
-function remove_spaces() {
-    local INPUT=$1
-    echo "${INPUT//[[:space:]]/}"
+function exists() {
+    if [[ -e $1 ]]; then return 0; else return 1; fi
 }
 
-function is_url() {
-    local INPUT=$1
-    INPUT=$(remove_spaces $INPUT)
-    if [[ "${INPUT:0:4}" == "http" ]]; then
-        return 0;
-    else
-        return 1;
-    fi
+function is_directory() {
+    if [[ -d $1 ]]; then return 0; else return 1; fi
 }
 
-function url_file_name() {
-    local INPUT=$1
-    echo "${INPUT##*/}"
+function is_file() {
+    if [[ -f $1 ]]; then return 0; else return 1; fi
 }
 
-FILE=$1
+RESULT=$1
 REFERENCE=$2
 TOLERANCE_OPTS=$3
 
-FILENAME=$FILE
-if is_url $FILE; then
-    FILENAME=$(url_file_name $FILE)
-    echo "Downloading data file"
-    wget $FILE -O $FILENAME
+if ! exists $RESULT; then
+    echo "Error: Result '${RESULT}' not found!"
+    exit 1
 fi
 
-REFERENCE_FILE_NAME=$REFERENCE
-if is_url $REFERENCE; then
-    REFERENCE_FILE_NAME=$(url_file_name $REFERENCE)
-    echo "Downloading reference file"
-    wget $REFERENCE -O $REFERENCE_FILE_NAME
+if ! exists $REFERENCE; then
+    echo "Error: Reference '${REFERENCE}' not found!"
+    exit 1
 fi
 
-fieldcompare file $FILENAME --reference $REFERENCE_FILE_NAME \
+COMP_MODE=""
+if is_directory $RESULT && is_directory $REFERENCE; then
+    COMP_MODE="dir"
+elif is_file $RESULT && is_file $REFERENCE; then
+    COMP_MODE="file"
+else
+    echo "Result and reference have to both be either files or folders."
+    echo "Cannot compare a file against a folder."
+    exit 1
+fi
+
+fieldcompare $COMP_MODE $RESULT \
+             -r $REFERENCE \
              $TOLERANCE_OPTS

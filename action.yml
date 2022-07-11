@@ -1,11 +1,11 @@
 name: "FieldCompare"
-description: "Compare the fields in two files"
+description: "Compare the fields in two files or two folders of files"
 inputs:
-  file:
-    description: "The file whose fields should be compared to a reference. Can be a local file or a URL."
+  result:
+    description: "The file/folder with the results to compare."
     required: True
-  reference-file:
-    description: "The reference file against which to perform the comparison. Can be a local file or a URL."
+  reference:
+    description: "The file/folder with the references to compare the results against."
     required: True
   tolerance-options:
     description: "Pass the fieldcompare tolerance options as string, e.g. '-rtol 1e-6 -rtol pressure:1e-3 -atol 1e-8 -atol pressure:1e-3'."
@@ -14,6 +14,6 @@ runs:
   using: "docker"
   image: "Dockerfile"
   args:
-    - ${{ inputs.file }}
-    - ${{ inputs.reference-file }}
+    - ${{ inputs.result }}
+    - ${{ inputs.reference }}
     - ${{ inputs.tolerance-options }}
