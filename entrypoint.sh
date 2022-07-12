@@ -14,7 +14,7 @@ function is_file() {
 
 RESULT=$1
 REFERENCE=$2
-TOLERANCE_OPTS=$3
+CLI_OPTS=$3
 
 if ! exists $RESULT; then
     echo "Error: Result '${RESULT}' not found!"
@@ -37,6 +37,4 @@ else
     exit 1
 fi
 
-fieldcompare $COMP_MODE $RESULT \
-             -r $REFERENCE \
-             $TOLERANCE_OPTS
+fieldcompare $COMP_MODE $RESULT -r $REFERENCE $CLI_OPTS

@@ -7,8 +7,8 @@ inputs:
   reference:
     description: "The file/folder with the references to compare the results against."
     required: True
-  tolerance-options:
-    description: "Pass the fieldcompare tolerance options as string, e.g. '-rtol 1e-6 -rtol pressure:1e-3 -atol 1e-8 -atol pressure:1e-3'."
+  cli-options:
+    description: "Pass fieldcompare command-line-interface options as string, e.g. for setting fuzzy tolerances."
     required: False
 runs:
   using: "docker"
@@ -16,4 +16,4 @@ runs:
   args:
     - ${{ inputs.result }}
     - ${{ inputs.reference }}
-    - ${{ inputs.tolerance-options }}
+    - ${{ inputs.cli-options }}
