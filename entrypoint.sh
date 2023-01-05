@@ -37,4 +37,4 @@ else
     exit 1
 fi
 
-fieldcompare $COMP_MODE $RESULT -r $REFERENCE $CLI_OPTS
+fieldcompare $COMP_MODE $RESULT $REFERENCE $CLI_OPTS
