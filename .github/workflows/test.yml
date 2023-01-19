@@ -1,0 +1,105 @@
+name: unit-tests
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: prepare-test-csv-files
+        run: |
+          echo -e "field1,field2,field3\n1.0,2.0,3.0" > test_file.csv
+          echo -e "field1,field2,field3\n1.0,2.0,3.001" > test_reference_file_with_deviation.csv
+          echo -e "field1,field2\n1.0,2.0" > test_reference_file_missing_field.csv
+
+      - name: compare-test-files
+        uses: ./
+        with:
+          result: "test_file.csv"
+          reference: "test_file.csv"
+
+      - name: compare-with-high-tolerance
+        uses: ./
+        with:
+          result: "test_file.csv"
+          reference: "test_reference_file_with_deviation.csv"
+          cli-options: "-rtol 1e-2 -atol 1e-2"
+
+      - name: compare-with-ignoring-missing-reference-field
+        uses: ./
+        with:
+          result: "test_file.csv"
+          reference: "test_reference_file_missing_field.csv"
+          cli-options: "--ignore-missing-reference-fields"
+
+      - name: compare-with-ignoring-missing-source-field
+        uses: ./
+        with:
+          result: "test_reference_file_missing_field.csv"
+          reference: "test_file.csv"
+          cli-options: "--ignore-missing-source-fields"
+
+      - name: compare-with-excluded-fields
+        uses: ./
+        with:
+          result: "test_file.csv"
+          reference: "test_reference_file_with_deviation.csv"
+          cli-options: "--exclude-fields field3"
+
+      - name: compare-selected-fields
+        uses: ./
+        with:
+          result: "test_file.csv"
+          reference: "test_reference_file_with_deviation.csv"
+          cli-options: "--include-fields field1 --include-fields field2"
+
+      - name: prepare-test-folders
+        run: |
+          mkdir test_data
+          cp test_file.csv test_data
+          cp test_file.csv test_data/test_file_2.csv
+          mkdir reference_data
+          cp test_file.csv reference_data/test_file.csv
+          cp test_reference_file_with_deviation.csv reference_data/test_file_2.csv
+          mkdir reference_data_additional_files
+          cp reference_data/* reference_data_additional_files/
+          cp reference_data_additional_files/test_file.csv reference_data_additional_files/test_file_3.csv
+
+      - name: compare-folders
+        uses: ./
+        with:
+          result: "test_data"
+          reference: "test_data"
+
+      - name: compare-folders-with-high-tolerance
+        uses: ./
+        with:
+          result: "test_data"
+          reference: "reference_data"
+          cli-options: "-rtol 1e-2 -atol 1e-2"
+
+      - name: compare-folders-with-file-inclusion-filter
+        uses: ./
+        with:
+          result: "test_data"
+          reference: "reference_data"
+          cli-options: "--include-files test_file.csv"
+
+      - name: compare-folders-with-ignoring-missing-source-files
+        uses: ./
+        with:
+          result: "test_data"
+          reference: "reference_data_additional_files"
+          cli-options: "--ignore-missing-source-files -rtol 1e-2 -atol 1e-2"
+
+      - name: compare-folders-with-ignoring-missing-reference-files
+        uses: ./
+        with:
+          result: "reference_data_additional_files"
+          reference: "test_data"
+          cli-options: "--ignore-missing-reference-files -rtol 1e-2 -atol 1e-2"
