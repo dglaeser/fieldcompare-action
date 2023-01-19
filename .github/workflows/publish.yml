@@ -11,7 +11,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           ref: ${{ github.event.release.tag_name }}
-          
+
       - name: update-release-tag
         run: |
           MAJOR_VERSION=$(echo "${{ github.event.release.tag_name }}" | tr -d "v" | cut -d '.' -f1)
@@ -20,5 +20,7 @@ jobs:
               echo "Could not deduce a valid major version!"
               exit 1
           fi
+          git config --local user.name "$(git show -a --format='%an')"
+          git config --local user.email "$(git show -a --format='%ae')"
           git tag -fa "v$MAJOR_VERSION" -m "Update v$MAJOR_VERSION tag"
           git push origin "v$MAJOR_VERSION" --force
