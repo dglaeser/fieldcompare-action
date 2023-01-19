@@ -1,0 +1,24 @@
+name: update-major-release-tag
+on:
+  release:
+    types: [published, edited]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.release.tag_name }}
+          
+      - name: update-release-tag
+        run: |
+          MAJOR_VERSION=$(echo "${{ github.event.release.tag_name }}" | tr -d "v" | cut -d '.' -f1)
+          echo "Major version tag to be created or updated is '$MAJOR_VERSION'"
+          if [[ ! $MAJOR_VERSION =~ ^[0-9]$ ]]; then
+              echo "Could not deduce a valid major version!"
+              exit 1
+          fi
+          git tag -fa "v$MAJOR_VERSION" -m "Update v$MAJOR_VERSION tag"
+          git push origin "v$MAJOR_VERSION" --force
