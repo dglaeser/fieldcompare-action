@@ -23,7 +23,7 @@ jobs:
               echo "Could not deduce a valid major version!"
               exit 1
           fi
-          git config --local user.name "$(git show -a --format='%an')"
-          git config --local user.email "$(git show -a --format='%ae')"
+          git config --local user.name "$(git show -s --format='%an')"
+          git config --local user.email "$(git show -s --format='%ae')"
           git tag -fa "v$MAJOR_VERSION" -m "Update v$MAJOR_VERSION tag"
           git push origin "v$MAJOR_VERSION" --force
