@@ -31,3 +31,12 @@ to be used for all fields with the name `pressure`, you could write:
     reference: "reference_file.csv"
     cli-options: "-rtol 1e-2 -atol 1e-6 -rtol pressure:1e-5 -atol pressure:1e-5"
 ```
+
+# `fieldcompare` versions
+
+The following table maps the versions of this action to the fieldcompare version it uses under the hood:
+
+| Action version | `fieldcompare` version |
+| -------- | ------- |
+| 1.0.0    | 0.1.0   |
+| 1.1.0    | 0.1.3   |
