@@ -1,6 +1,4 @@
-# `fieldcompare` Action
-
-This repository provides a GitHub action around the command-line interface of [`fieldcompare`](https://gitlab.com/dglaeser/fieldcompare)
+GitHub action around the command-line interface of [`fieldcompare`](https://gitlab.com/dglaeser/fieldcompare)
 (or see the [GitHub mirror](https://github.com/dglaeser/fieldcompare)). This allows an easy integration of regression tests into your
 workflows.
 
@@ -10,7 +8,7 @@ Comparing two files in your workflows is as simple as this:
 
 ```yml
 - name: regression-test
-  uses: dglaeser/fieldcompare-action@v1.0
+  uses: dglaeser/fieldcompare-action@v1
   with:
     result: "file.csv"
     reference: "reference_file.csv"
@@ -25,7 +23,7 @@ to be used for all fields with the name `pressure`, you could write:
 
 ```yml
 - name: regression-test
-  uses: dglaeser/fieldcompare-action@v1.0
+  uses: dglaeser/fieldcompare-action@v1
   with:
     result: "file.csv"
     reference: "reference_file.csv"
@@ -40,3 +38,5 @@ The following table maps the versions of this action to the fieldcompare version
 | -------- | ------- |
 | 1.0.0    | 0.1.0   |
 | 1.1.0    | 0.1.3   |
+| 1.1.1    | 0.1.3   |
+| 1.1.2    | 0.1.3   |
