@@ -17,3 +17,6 @@ runs:
     - ${{ inputs.result }}
     - ${{ inputs.reference }}
     - ${{ inputs.cli-options }}
+branding:
+  icon: 'check-square'
+  color: 'green'
